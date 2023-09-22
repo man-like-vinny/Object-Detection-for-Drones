@@ -1,0 +1,44 @@
+clc;
+clear all;close all;
+warning off all;
+
+% add toolboxes
+addpath('display');
+addpath('eval');
+addpath(genpath('utils'));
+
+datasetPath = 'VisDrone2019-MOT-test-combined-classes\'; % dataset path
+%datasetPath = 'fishdrone-150-source';
+%datasetPath = 'fishaug\300'; % dataset path
+%datasetPath = 'VisDrone2019-MOT-test-640-optimised\'; % dataset path
+%detPath = 'yolov7-MOT-detections-640-optimised'; % detection input path
+%detPath = 'bytetrack\fishdrone-cheat\300'; % detection input path
+%detPath = 'fishaug_strongsort\fishdrone-300 - Copy'
+detPath = 'fishdrone-cheat-strongsort\150'
+
+%detPath = 'strongsort\'; % detection input path
+%detPath = 'yolov7-MOT-detections-combined-classes-optimised'; % detection input path
+%detPath = 'testfile\'
+resPath = 'test-challenge_MOT_results-single\'; % result path
+%resPath = 'test-challenge_MOT_results\'; % result path
+isSeqDisplay = false; % flag to display the detections 
+isNMS = false; % flag to conduct NMS
+nmsThre = 0.6; % threshold of NMS
+
+evalTask = 'Task4b'; % the evaluated task, i.e, Task4a without detection input and Task4b with detection input
+trackerName = 'GOG'; % the tracker name
+evalClassSet = {'car', 'pedestrian', 'motor','tricycle', 'van', 'bus', 'truck', 'bicycle'}; % the set of evaluated object category
+threSet = [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]; % the detection score threshold
+
+gtPath = fullfile(datasetPath, 'annotations'); % annotation path
+seqPath = fullfile(datasetPath, 'sequences'); % sequence path
+
+%% run the tracker
+runTrackerAllClass(isSeqDisplay, isNMS, detPath, resPath, seqPath, evalClassSet, threSet, nmsThre, trackerName);
+
+%% evaluate the tracker
+if(strcmp(evalTask, 'Task4a'))
+    [ap, recall, precision] = evaluateTrackA(seqPath, resPath, gtPath, evalClassSet);
+elseif(strcmp(evalTask, 'Task4b'))
+    [tendallMets, allresult] = evaluateTrackB(seqPath, resPath, gtPath, evalClassSet);
+end
