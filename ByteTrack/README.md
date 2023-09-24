@@ -1,36 +1,12 @@
-# Semantic Scene Parsing from Drones (Object Detection with Temporal Consistency from Unmanned Aerial Vehicles)
+# Yolov7 + ByteTrack
 
-![plot](image/Overview-Image.png)
+Here are some instructions to set up the tracking to the Yolov7 (detection framework):
 
-GitHub repository associated with the dissertation of Vinayak Unnithans's Master project completed at the Imperial College London for the fulfilment of the requirements for the degree of MSc Applied Machine Learning.
+## track_direction.py
+The track_direction.py script is used for only ONE folder with a sequence of frames. For example if a sequence of frames are enclosed within a folder named 'uav_xxxxxxxxxx', then the script will run for all images within that folder. Set the **source** and the pre-trained **weights** as the argumented to running the script in a terminal.
 
-## Data Augmentation
-The fisheye projection model chosen for this project can be applied to existing datasets using the scripts found in distortion_scripts/. The function to apply the considered radial distortion model is included in apply-fisheye.py for user interest but is not used.
+## track_direction_multiple.py
+The track_direction_multiple.py script is used for multiple folders with sequences of frames. This entire script can be executed once for different folders capturing different aerial scenes. The **source** and the **weights** will need to set as before.
 
-## Datasets
-To access the datasets used in this project, simply run the scripts found in the get_datasets/ directory.
-
-## Models
-All models are trained using standard YOLOv7 (as opposed to YOLOv7-tiny) and an input resolution of 1280.
-
-### Single distortion level models
-Trained on f=150: 
-[`fishdrone1280_150.pt`](https://github.com/Nelson-da-Silva/yolov7_VisDrone/releases/download/Models/fishdrone1280_150.pt)
-
-Trained on f=300:
-[`fishdrone1280_300.pt`](https://github.com/Nelson-da-Silva/yolov7_VisDrone/releases/download/Models/fishdrone1280_300.pt)
-
-Trained on f=600:
-[`fishdrone1280_600.pt`](https://github.com/Nelson-da-Silva/yolov7_VisDrone/releases/download/Models/fishdrone1280_600.pt)
-
-Trained on f=830:
-[`fishdrone1280_830.pt`](https://github.com/Nelson-da-Silva/yolov7_VisDrone/releases/download/Models/fishdrone1280_830.pt)
-
-### Large range of distortion levels model
-Trained on f=150, f=300, f=600 and f=830: [`fishdrone1280_all.pt`](https://github.com/Nelson-da-Silva/yolov7_VisDrone/releases/download/Models/fishdrone1280_all.pt)
-
-### Upscaled + Small range of distortion levels model
-Trained using the upscaled distortion model at f=300, f=600 and f=830: [`upscaled_fishdrone1280_all.pt`](https://github.com/Nelson-da-Silva/yolov7_VisDrone/releases/download/Models/upscaled_fishdrone1280_all.pt)
-
-## Regional evaluation methods
-The scripts found in eval_scripts/ provide two methods of regional evaluation: heatmaps and radial splitting. More details on these are provided in the report. Note that to use these scripts, the prediction files output from testing must include the confidences associated with each prediction.
+## track_direction_fisheye.py
+The track_direction_fisheye.py script is used for only ONE folder with a sequence of fisheye applied frames. The addition of **height** and **width** will need to be set depending on the image size. The **focal_length** should also be set so that the naming convention for the output files and videos are set correctly.
